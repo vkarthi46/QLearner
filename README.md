@@ -1,7 +1,7 @@
 QLearner | Born on July 22, 2013 | Lives at www.pftq.com/qlearner/
 © 2013 QLearner by pftq
 
-	"A practical, generalized application of various machine learning algorithms for C# programming."
+	A practical, generalized application of various machine learning algorithms for C# programming.
 
 	QLearner provides generalized machine learning algorithms to solve to any problem defined by a QState.  The QState Plugins download includes a template to build your own QStates and several examples to learn from.  For more advanced users, new QAlgos can also be created to leverage the framework provided by QLearner.
 
@@ -23,17 +23,20 @@ Credits:
 Changelog:
 
 v1-2 2014-07-07 to 2014-08-01, pftq:
-	Added maze QState for basic maze solving tests.
-	Finished Approximate QLearning algo.
-	Modulized algos, so that new algos can be easily added via template/API.
-	Modulized QAgent class so that QLearner can be included as C# library and run programatically.
-	Added various search algorithms to the Resources namespace.
-	Overhauled plugin system to allow multiple QStates and QAlgos per file.
-	Added ability to load and save learned data.
-	Added score and avg score meters.
+
+	* Added maze QState for basic maze solving tests.
+	* Finished Approximate QLearning algo.
+	* Modulized algos, so that new algos can be easily added via template/API.
+	* Modulized QAgent class so that QLearner can be included as C# library and run programatically.
+	* Added various search algorithms to the Resources namespace.
+	* Overhauled plugin system to allow multiple QStates and QAlgos per file.
+	* Added ability to load and save learned data.
+	* Added score and avg score meters.
 
 v1-1 2013-07-24, pftq:
-	Added features construct for multifactoral analysis of states.
+
+	* Added features construct for multifactoral analysis of states.
 
 v1-0 2013-07-22 to 07-23, pftq:
-	QLearner is born! It has figured out how to count to 100... and pretty much any other state-based problem.
+
+	* QLearner is born! It has figured out how to count to 100... and pretty much any other state-based problem.
