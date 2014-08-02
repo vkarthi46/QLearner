@@ -1,9 +1,9 @@
 QLearner | Born on July 22, 2013 | Lives at www.pftq.com/qlearner/ 
 © 2013 QLearner by pftq
 
-A practical, generalized application of various machine learning algorithms for C# programming.
+"A practical, generalized application of various machine learning algorithms for C# programming."
 
-QLearner provides generalized machine learning algorithms to solve to any problem defined by a QState.  The QState Plugins download includes a template to build your own QStates and several examples to learn from.  For more advanced users, new QAlgos can also be created to leverage the framework provided by QLearner.
+QLearner provides generalized machine learning algorithms to solve to any problem defined by a QState.  The QState Plugins Template download includes a template to build your own QStates and several examples to learn from.  For more advanced users, new QAlgos can also be created to leverage the framework provided by QLearner.  Documentation and API are provided for developing your own plugins, so that it is not necessary to actually modify the source code of the underlying QLearner framework.
 
 Simply open the QLearner program and click on the QState box to select a problem to solve and the Algorithms box to choose an algorithm to solve it with.  Press Learn to give QLearner a chance to "practice" at the problem and learn about it.  Press Awaken for QLearner to apply its most current knowledge to solve the problem in the most efficient way it currently knows how.
 
@@ -23,7 +23,7 @@ Credits:
 
 Changelog:
 
-v1-2 2014-07-07 to 2014-08-01, pftq:
+	v1-2 2014-07-07 to 2014-08-01, pftq:
 
 	* Added maze QState for basic maze solving tests.
 	* Finished Approximate QLearning algo.
@@ -34,10 +34,10 @@ v1-2 2014-07-07 to 2014-08-01, pftq:
 	* Added ability to load and save learned data.
 	* Added score and avg score meters.
 
-v1-1 2013-07-24, pftq:
+	v1-1 2013-07-24, pftq:
 
 	* Added features construct for multifactoral analysis of states.
 
-v1-0 2013-07-22 to 07-23, pftq:
+	v1-0 2013-07-22 to 07-23, pftq:
 
 	* QLearner is born! It has figured out how to count to 100... and pretty much any other state-based problem.
