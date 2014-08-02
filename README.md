@@ -3,11 +3,11 @@ QLearner | Born on July 22, 2013 | Lives at www.pftq.com/qlearner/
 
 "A practical, generalized application of various machine learning algorithms for C# programming."
 
-QLearner provides generalized machine learning algorithms to solve to any problem defined by a QState.  The QState Plugins Template download includes a template to build your own QStates and several examples to learn from.  For more advanced users, new QAlgos can also be created to leverage the framework provided by QLearner.  Documentation and API are provided for developing your own plugins, so that it is not necessary to actually modify the source code of the underlying QLearner framework.
+QLearner provides generalized machine learning algorithms to solve to any problem defined by a QState.  The QState Plugins Template download includes a template to build your own QStates and several examples to learn from.  For more advanced users, new QAlgos can also be created to leverage the framework provided by QLearner.  Documentation and API are provided for developing your own plugins, so that it is not necessary to actually modify the source code of the underlying QLearner framework.  Additionally, QLearner can be compiled or included as a class library for instantiating instances of QLearner's algos for your own code projects.
 
-Simply open the QLearner program and click on the QState box to select a problem to solve and the Algorithms box to choose an algorithm to solve it with.  Press Learn to give QLearner a chance to "practice" at the problem and learn about it.  Press Awaken for QLearner to apply its most current knowledge to solve the problem in the most efficient way it currently knows how.
+To use QLearner, simply open the QLearner program and click on the QState box to select a problem to solve and the QAlgo box to choose an algorithm to solve it with.  Press Learn to give QLearner a chance to "practice" at the problem and learn about it.  Press Awaken for QLearner to apply its most current knowledge to solve the problem in the most efficient way it currently knows how.  To use QLearner programatically, include QLearner as a resource in your project and instantiate QAgent objects with instances of QState and QAlgo through QAgent's Learn/Awaken methods.
 
-QLearner can be made to perpetually learn and continue solving an ongoing problem (such as world domination, the stock market, or the weather) if the QState Plugin is designed in such a way such that the isEnd() state is never reached.
+QLearner can be made to perpetually learn and continue solving an ongoing problem (such as world domination, the stock market, or the weather) if the QState Plugin is designed in such a way such that the IsEnd() state is never reached.
 
 About QLearner:
 

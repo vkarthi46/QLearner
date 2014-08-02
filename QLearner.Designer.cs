@@ -261,7 +261,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(249, 722);
+            this.label5.Location = new System.Drawing.Point(249, 726);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(55, 20);
             this.label5.TabIndex = 31;
@@ -270,8 +270,9 @@
             // score
             // 
             this.score.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.score.Location = new System.Drawing.Point(310, 718);
+            this.score.Location = new System.Drawing.Point(310, 722);
             this.score.Name = "score";
+            this.score.ReadOnly = true;
             this.score.Size = new System.Drawing.Size(175, 26);
             this.score.TabIndex = 30;
             this.score.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -280,7 +281,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(510, 722);
+            this.label4.Location = new System.Drawing.Point(510, 726);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 20);
             this.label4.TabIndex = 29;
@@ -289,8 +290,9 @@
             // avgScore
             // 
             this.avgScore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.avgScore.Location = new System.Drawing.Point(602, 718);
+            this.avgScore.Location = new System.Drawing.Point(602, 722);
             this.avgScore.Name = "avgScore";
+            this.avgScore.ReadOnly = true;
             this.avgScore.Size = new System.Drawing.Size(175, 26);
             this.avgScore.TabIndex = 28;
             this.avgScore.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -344,7 +346,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 722);
+            this.label3.Location = new System.Drawing.Point(6, 726);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 20);
             this.label3.TabIndex = 23;
@@ -353,8 +355,9 @@
             // trialNum
             // 
             this.trialNum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trialNum.Location = new System.Drawing.Point(69, 718);
+            this.trialNum.Location = new System.Drawing.Point(69, 722);
             this.trialNum.Name = "trialNum";
+            this.trialNum.ReadOnly = true;
             this.trialNum.Size = new System.Drawing.Size(175, 26);
             this.trialNum.TabIndex = 22;
             this.trialNum.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
