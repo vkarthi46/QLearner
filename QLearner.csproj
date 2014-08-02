@@ -13,7 +13,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <PublisherName>pftq</PublisherName>
     <DisallowUrlActivation>true</DisallowUrlActivation>
-    <ApplicationRevision>48</ApplicationRevision>
+    <ApplicationRevision>49</ApplicationRevision>
     <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
