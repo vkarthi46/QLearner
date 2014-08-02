@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QLearner));
             this.Learn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -158,6 +159,14 @@
             this.State,
             this.Action,
             this.QValue});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.LearningTable.DefaultCellStyle = dataGridViewCellStyle1;
             this.LearningTable.Location = new System.Drawing.Point(9, 418);
             this.LearningTable.Name = "LearningTable";
             this.LearningTable.ReadOnly = true;
@@ -273,7 +282,7 @@
             this.score.Location = new System.Drawing.Point(310, 722);
             this.score.Name = "score";
             this.score.ReadOnly = true;
-            this.score.Size = new System.Drawing.Size(175, 26);
+            this.score.Size = new System.Drawing.Size(195, 26);
             this.score.TabIndex = 30;
             this.score.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -281,7 +290,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(510, 726);
+            this.label4.Location = new System.Drawing.Point(518, 726);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 20);
             this.label4.TabIndex = 29;
@@ -290,7 +299,7 @@
             // avgScore
             // 
             this.avgScore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.avgScore.Location = new System.Drawing.Point(602, 722);
+            this.avgScore.Location = new System.Drawing.Point(610, 723);
             this.avgScore.Name = "avgScore";
             this.avgScore.ReadOnly = true;
             this.avgScore.Size = new System.Drawing.Size(175, 26);
@@ -346,7 +355,7 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 726);
+            this.label3.Location = new System.Drawing.Point(5, 725);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 20);
             this.label3.TabIndex = 23;
@@ -355,7 +364,7 @@
             // trialNum
             // 
             this.trialNum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trialNum.Location = new System.Drawing.Point(69, 722);
+            this.trialNum.Location = new System.Drawing.Point(66, 722);
             this.trialNum.Name = "trialNum";
             this.trialNum.ReadOnly = true;
             this.trialNum.Size = new System.Drawing.Size(175, 26);
