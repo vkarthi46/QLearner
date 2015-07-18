@@ -30,7 +30,7 @@ namespace QLearner
 
         public override string ToString()
         {
-            return state.ToString() + "_" + action;
+            return string.Join("_", new string[]{state.ToString(),  action.ToString()});
         }
     }
 }

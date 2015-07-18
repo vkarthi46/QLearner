@@ -16,7 +16,7 @@ namespace QLearner.QAlgos
     {
         protected Dictionary<QFeature, decimal> QWeights;
         private Dictionary<QStateActionPair, Dictionary<QFeature, decimal>> featureCache;
-
+        
         public override void Initialize()
         {
             QWeights = new Dictionary<QFeature, decimal>();
@@ -31,7 +31,6 @@ namespace QLearner.QAlgos
             decimal qv = 0;
 
             Dictionary<QFeature, decimal> features;
-            //features = p.state.GetFeaturesEstimate(p.action);
             if (featureCache.ContainsKey(p)) features = featureCache[p];
             else
             {
@@ -69,7 +68,9 @@ namespace QLearner.QAlgos
                     decimal oldWeight = QWeights[feature.Key];
                     decimal newWeight = oldWeight + learn * difference * feature.Value;
                     if (Math.Abs(newWeight) <= 1000000)
+                    {
                         QWeights[feature.Key] = newWeight;
+                    }
                     else WriteOutput("Warning: Weights diverging. Check that your features are valid and measured consistently with everything else.", true);
                 }
                 catch (Exception e)
@@ -81,11 +82,10 @@ namespace QLearner.QAlgos
             }
             
             // Output
-            foreach (KeyValuePair<QFeature, decimal> feature in QWeights)
+            foreach (QFeature f in features.Keys)
             {
-                UpdateLearningTable(-1, feature.Key.ToString(), feature.Value.ToString(), features.ContainsKey(feature.Key) ? features[feature.Key] : 0);
+                UpdateLearningTable(-1, f.ToString(), QWeights[f].ToString(), features[f]);
             }
-
         }
 
         public override void Open(object o, QState initialState)

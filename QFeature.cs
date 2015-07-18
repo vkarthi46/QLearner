@@ -67,4 +67,42 @@ namespace QLearner
             return f;
         }
     }
+
+    [Serializable]
+    [System.Reflection.ObfuscationAttribute(Feature = "renaming", ApplyToMembers = true)]
+    [System.Reflection.ObfuscationAttribute(Feature = "properties renaming")]
+    public class QFeature_StateAction : QFeature
+    {
+        private QStateActionPair sa;
+        public QFeature_StateAction(QStateActionPair t)
+        {
+            sa = t;
+        }
+
+        public QFeature_StateAction(SerializationInfo info, StreamingContext context)
+        {
+            sa.state.Open(info.GetValue("state", typeof(object)));
+            sa.action=(QAction)(info.GetValue("action", typeof(QAction)));
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("state", sa.state.Save());
+            info.AddValue("action", sa.action);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return sa == ((QFeature_StateAction)obj).sa;
+        }
+        public override int GetHashCode()
+        {
+            return sa.GetHashCode();
+        }
+        public override string ToString()
+        {
+            return sa.ToString();
+        }
+
+    }
 }

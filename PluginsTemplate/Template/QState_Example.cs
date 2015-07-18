@@ -56,7 +56,7 @@ namespace QLearner.QStates
         }
 
         // Returns list of possible choices given the current state.
-        public override QAction[] GetChoices()
+        public override QAction[] GetActions()
         {
             return new QAction[] { };
         }

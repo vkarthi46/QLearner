@@ -26,11 +26,12 @@ Credits:
 
 Changelog:
 
-	v1-3 2014-09-06 to 2015-07-17, pftq:
+	v1-3 2014-09-06 to 2015-07-18, pftq:
 
-	* Converted features, actions to abstraction to allow any datatype as the key.
+	* Converted features, actions to abstractions to allow any datatype as the key.
 	* Added new GetObservedStates method to QState to allow observation of others' actions or choices it could have made.
 	* Added improved QLearning algo called QLearning_Observant that takes advantage of GetObservedStates. Exponentially improves learning rate.
+	* Performance improvements by less frequent GUI updates.
 
 	v1-2 2014-07-07 to 2014-08-01, pftq:
 

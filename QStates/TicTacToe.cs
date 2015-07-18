@@ -126,7 +126,7 @@ namespace QLearner.QStates
             }
             else return this;
         }
-        public override QAction[] GetChoices()
+        public override QAction[] GetActions()
         {
             return openSpaces.Any() ? openSpaces.Select(x => new QAction_String(x.X + "," + x.Y)).ToArray() : new QAction[] { new QAction_String("") };
         }
@@ -230,7 +230,7 @@ namespace QLearner.QStates
             }
             if (gui != null) gui.Quit();
         }
-
+        /*
         public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
             Dictionary<string, decimal> slots = new Dictionary<string, decimal>() { };
@@ -245,7 +245,7 @@ namespace QLearner.QStates
             }
             return QFeature_String.FromStringDecimalDictionary(slots);
         }
-
+        */
         public override object Save()
         {
             return new object[] { myMoves, yourMoves, openSpaces};

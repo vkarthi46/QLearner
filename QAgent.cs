@@ -64,6 +64,7 @@ namespace QLearner
                 currentProcess = new QProcess(learnProcess);
                 WriteOutput("Learning now...", true);
                 Learn(trials, learn, discount, explore);
+                if (master != null) master.UpdateGuiMetrics(true);
                 if (isRunning) WriteOutput("I am done learning.", true);
                 else WriteOutput("Learning aborted.", true);
                 WriteOutput("Runtime: " + (DateTime.Now - startTime), true);
@@ -99,6 +100,7 @@ namespace QLearner
                 currentProcess = new QProcess(awakenProcess);
                 WriteOutput("Awakening now...", true);
                 Awaken(trials, learn, discount, explore);
+                if (master != null) master.UpdateGuiMetrics(true);
                 if (isRunning)
                     WriteOutput("I am done.", true);
                 else
@@ -117,7 +119,7 @@ namespace QLearner
             this.learn = learn;
             this.discount = discount;
             this.explore = explore;
-            master.UpdateTrial(trialNum);
+            if (master != null) master.UpdateTrial(trialNum);
             QState state = initialState.Initialize();
             state.Inherit(initialState);
 
@@ -125,6 +127,7 @@ namespace QLearner
             if (master != null)
             {
                 master.UpdateScore(s.GetValue());
+                master.UpdateGuiMetrics();
             }
             s.End();
         }

@@ -27,11 +27,12 @@ namespace QLearner
         private Dictionary<QStateActionPair, DataGridViewRow> LearningTableQStateKeys;
         private Dictionary<string, DataGridViewRow> LearningTableStringKeys;
         private Dictionary<QState, QStateActionPair> BestActions;
-        private DateTime lastRowUpdate = DateTime.Now, lastOutputUpdate = DateTime.Now;
+        private DateTime lastGUIUpdate = DateTime.Now, lastOutputUpdate = DateTime.Now;
         private List<DataGridViewRow> displayRowQueue;
         private List<string> OutputQueue;
 
-        private decimal tempExploreRate=-1, tempNumTrials=-1;
+        private decimal tempExploreRate=-1, tempNumTrials=-1, guiScore=0, guiAvgScore=0;
+        private int guiTrials = 0;
 
         public QLearner()
         {
@@ -519,11 +520,14 @@ namespace QLearner
             }
         }
 
-        private delegate void UpdateTrialD(decimal t);
-        public void UpdateTrial(decimal t)
+        private delegate void UpdateTrialD(int t);
+        public void UpdateTrial(int t)
         {
             if (InvokeRequired) Invoke(new UpdateTrialD(UpdateTrial), t);
-            else trialNum.Text = t.ToString();
+            else
+            {
+                guiTrials = t;
+            }
         }
 
         private delegate void UpdateScoreD(decimal t);
@@ -532,11 +536,24 @@ namespace QLearner
             if (InvokeRequired) Invoke(new UpdateScoreD(UpdateScore), newScore);
             else
             {
-                decimal avg = 0, trial = 1;
-                decimal.TryParse(avgScore.Text, out avg);
-                decimal.TryParse(trialNum.Text, out trial);
-                score.Text = newScore.ToString();
-                avgScore.Text = ((avg * (trial - 1) + newScore) / trial).ToString();
+                guiScore = newScore;
+                guiAvgScore = ((guiAvgScore * (guiTrials - 1) + newScore) / guiTrials);
+            }
+        }
+
+        private delegate void UpdateGuiMetricsD(bool force);
+        public void UpdateGuiMetrics(bool force=false)
+        {
+            if (InvokeRequired) Invoke(new UpdateGuiMetricsD(UpdateGuiMetrics), force);
+            else
+            {
+                if (force || (DateTime.Now - lastGUIUpdate).TotalSeconds > 1)
+                {
+                    trialNum.Text = guiTrials.ToString();
+                    score.Text = guiScore.ToString();
+                    avgScore.Text = guiAvgScore.ToString();
+                    lastGUIUpdate = DateTime.Now;
+                }
             }
         }
 

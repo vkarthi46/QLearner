@@ -28,7 +28,7 @@ namespace QLearner.QStates
         {
             return new Count() { start = this.start, end=this.end, value = (action==UP? this.value + this.upIncrement:this.value - this.downIncrement), upIncrement = this.upIncrement, downIncrement = this.downIncrement};
         }
-        public override QAction[] GetChoices()
+        public override QAction[] GetActions()
         {
             return new QAction[] { UP, DOWN };
         }

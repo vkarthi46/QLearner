@@ -23,7 +23,7 @@ namespace QLearner.QAlgos
             {
                 foreach (QAction action in actions.actionsList)
                 {
-                    if (!currentState.IsEnd() && isRunning && currentState.GetChoices().Contains(action))
+                    if (!currentState.IsEnd() && isRunning && currentState.GetActions().Contains(action))
                     {
                         WriteOutput(currentState + ": " + action);
                         QState newState = currentState.GetNewState(action);

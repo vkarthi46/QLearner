@@ -18,7 +18,7 @@ namespace QLearner
          * Definitions of numerous functions you can use to make it easier to code your plugins.  Do not include this file with your project.  This is just for reference.*/
 
         // Returns either the constants LEARN or AWAKE so you can vary your plugin depending on the mode.
-        protected bool CurrentMode { get { return agent==null? LEARN:agent.CurrentMode; } }
+        protected bool CurrentMode { get { return agent==null? AWAKEN:agent.CurrentMode; } }
         protected static bool LEARN { get { return QLearner.LEARN; } }
         protected static bool AWAKEN { get { return QLearner.AWAKEN; } }
         protected bool HideOutput { get { return main==null || main.OutputHidden; } }
@@ -56,7 +56,7 @@ namespace QLearner
         {
             if(main!=null) main.UpdateLearningTable(n, s, a, qv);
         }
-        protected void UpdateLearningTable(int n, QState s, string a, decimal qv)
+        protected void UpdateLearningTable(int n, QState s, QAction a, decimal qv)
         {
             if(main!=null) main.UpdateLearningTable(n, s, a, qv);
         }

@@ -14,7 +14,7 @@ namespace QLearner.QAlgos
      * -pftq
      * */
     [System.Reflection.ObfuscationAttribute(Feature = "renaming", ApplyToMembers = false)]
-    public class QLearning_Observant:QLearning
+    public class QLearning_Observant:QLearning_Approximate
     {
         public override QState Run(QState currentState, int trialNum, decimal learn, decimal discount, decimal explore)
         {
@@ -37,12 +37,13 @@ namespace QLearner.QAlgos
                     exp = false;
                 }
                 QState newState = currentState.GetNewState(a);
+                if (!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString());
                 newState.Inherit(currentState);
                 newState.Step();
                 decimal r = GetReward(currentState, newState);
                 score += r;
                 QUpdate(actionsTaken, currentState, a, newState, r);
-                if(!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString() + " | Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
+                if (!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
                 
                 foreach (KeyValuePair<QStateActionPair, QState> kv in newState.GetObservedStates(currentState, a))
                 {

@@ -84,7 +84,7 @@ namespace QLearner.QStates
             // Pass all variables to new state
             return new Maze_With_No_Walls() { maze = maze, self = new Point(newX, newY), goal = goal, goalx = goalx, goaly = goaly, time = time + 1, width = width, height = height, score = score};
         }
-        public override QAction[] GetChoices()
+        public override QAction[] GetActions()
         {
             List<QAction> options = new List<QAction>();
             if (self.X > 0) options.Add(LEFT);

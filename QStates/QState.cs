@@ -57,7 +57,7 @@ namespace QLearner.QStates
         }
 
         // Returns list of possible choices given the current state.
-        public virtual QAction[] GetChoices()
+        public virtual QAction[] GetActions()
         {
             return new QAction[] { };
         }
@@ -94,7 +94,7 @@ namespace QLearner.QStates
         // Tip: Feature values should be defined as 1 or 0 (on/off) or try to normalize the value out of 1 as opposed to using infinite domain.
         public virtual Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
-            { return new Dictionary<QFeature, decimal>() { { new QFeature_String(ToString()), 1 }}; }
+            { return new Dictionary<QFeature, decimal>() { { new QFeature_StateAction(new QStateActionPair(this, action)), 1 }}; }
         }
 
         // Called when the user clicks on the Settings button with your plugin selected.

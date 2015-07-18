@@ -150,7 +150,7 @@ namespace QLearner.QStates
             // Pass all variables to new state
             return new Maze() { maze = maze, self = newPos, goal = goal, width=width, height=height, walls=walls, score=score-1, opponent = opponent.ToList(), opponents=opponents, random=random, opponentDifficulty=opponentDifficulty};
         }
-        public override QAction[] GetChoices()
+        public override QAction[] GetActions()
         {
             List<QAction> options = new List<QAction>();
             if (self.X > 0 && !walls.Contains(new Point(self.X - 1, self.Y))) options.Add(LEFT);
@@ -158,6 +158,18 @@ namespace QLearner.QStates
             if (self.Y > 0 && !walls.Contains(new Point(self.X, self.Y - 1))) options.Add(UP);
             if (self.Y < height - 1 && !walls.Contains(new Point(self.X, self.Y + 1))) options.Add(DOWN);
             return options.ToArray();
+        }
+        public override Dictionary<QStateActionPair, QState> GetObservedStates(QState prevState, QAction action)
+        {
+            Maze m = (Maze)prevState;
+            Dictionary<QStateActionPair, QState> otherMoves = new Dictionary<QStateActionPair, QState>();
+            foreach (QAction a in prevState.GetActions())
+            {
+                Maze potentialMove = (Maze)m.GetNewState(a);
+                potentialMove.opponent = opponent.ToList();
+            }
+
+            return otherMoves;
         }
         public override decimal GetValue()
         {
@@ -206,7 +218,7 @@ namespace QLearner.QStates
 
                         if (random.NextDouble() > opponentDifficulty)
                         {
-                            QAction[] allActions = tempState.GetChoices();
+                            QAction[] allActions = tempState.GetActions();
                             action = allActions.ElementAt(random.Next(allActions.Length));
                         }
 

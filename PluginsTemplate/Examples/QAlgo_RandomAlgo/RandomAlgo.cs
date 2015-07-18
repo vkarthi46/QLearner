@@ -23,9 +23,9 @@ namespace QLearner.QAlgos
         // Must return the final state
         public override QState Run(QState currentState, int trialNum, decimal learn, decimal discount, decimal explore)
         {
-             while (!currentState.IsEnd() && currentState.GetChoices().Length > 0 && isRunning)
+             while (!currentState.IsEnd() && currentState.GetActions().Length > 0 && isRunning)
              {
-                 QAction action = currentState.GetChoices().ElementAt(r.Next(currentState.GetChoices().Length));
+                 QAction action = currentState.GetActions().ElementAt(r.Next(currentState.GetActions().Length));
                 QState newState = currentState.GetNewState(action);
                 newState.Inherit(currentState);
                 newState.Step();

@@ -47,12 +47,13 @@ namespace QLearner.QAlgos
                     exp = false;
                 }
                 QState newState = currentState.GetNewState(a);
+                if (!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString());
                 newState.Inherit(currentState);
                 newState.Step();
                 decimal r = GetReward(currentState, newState);
                 score += r;
                 QUpdate(actionsTaken, currentState, a, newState, r);
-                if(!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString() + " | Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
+                if(!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
 
                 currentState = newState;
             }
@@ -78,7 +79,7 @@ namespace QLearner.QAlgos
         // Return list of all possible states that can result from an action taken from the current state
         protected virtual List<QStateActionPair> GetOutcomes(QState state)
         {
-            return state.GetChoices().Select(x => new QStateActionPair(state, x)).ToList() ;
+            return state.GetActions().Select(x => new QStateActionPair(state, x)).ToList() ;
         }
 
         // Return the value of the best action taken at given state, else 0 if not known
