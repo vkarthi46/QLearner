@@ -107,12 +107,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QAction.cs" />
+    <Compile Include="QAlgos\Hidden_Markov_Model.cs" />
     <Compile Include="QAlgos\QLearning_Observant.cs" />
     <Compile Include="QFeature.cs" />
     <Compile Include="QLearned.cs" />
     <Compile Include="QAlgos\AStar_Search.cs" />
     <Compile Include="QAlgos\Breadth_First_Search.cs" />
     <Compile Include="QAlgos\Depth_First_Search.cs" />
+    <Compile Include="QStates\Probability.cs" />
     <Compile Include="QStates\TicTacToe.cs" />
     <Compile Include="QStates\TicTacToeGUI.cs">
       <SubType>Form</SubType>
@@ -120,6 +122,7 @@
     <Compile Include="QStates\TicTacToeGUI.designer.cs">
       <DependentUpon>TicTacToeGUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Bayesian_Network.cs" />
     <Compile Include="Resources\PriorityQueue\PriorityQueueNode.cs" />
     <Compile Include="Resources\PriorityQueue\HeapPriorityQueue.cs" />
     <Compile Include="Resources\PriorityQueue\IPriorityQueue.cs" />
