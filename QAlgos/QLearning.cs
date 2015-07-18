@@ -47,19 +47,19 @@ namespace QLearner.QAlgos
                     exp = false;
                 }
                 QState newState = currentState.GetNewState(a);
-                WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString());
+                if (!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString());
                 newState.Inherit(currentState);
                 newState.Step();
                 decimal r = GetReward(currentState, newState);
                 score += r;
                 QUpdate(actionsTaken, currentState, a, newState, r);
-                WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
+                if(!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
 
                 currentState = newState;
             }
             if (isRunning)
             {
-                WriteOutput("Trial " + trialNum + ": " + Math.Round(score, 4) + " in " + actionsTaken + " step" + (actionsTaken == 1 ? "" : "s") + ".");
+                if (!HideOutput) WriteOutput("Trial " + trialNum + ": " + Math.Round(score, 4) + " in " + actionsTaken + " step" + (actionsTaken == 1 ? "" : "s") + ".", true);
             }
             return currentState;
         }
