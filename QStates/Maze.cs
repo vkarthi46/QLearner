@@ -22,6 +22,8 @@ namespace QLearner.QStates
         private Random random = new Random();
         private Dictionary<QState, QSearchResult> bestOpponentPath = new Dictionary<QState, QSearchResult>();
 
+        private readonly QAction UP = new QAction_String("up"), DOWN = new QAction_String("down"), LEFT = new QAction_String("left"), RIGHT = new QAction_String("right");
+
         private Point[] walls = new Point[] { 
         };
 
@@ -124,16 +126,16 @@ namespace QLearner.QStates
         {
             return self.X*100000+self.Y*10000+goal.X*1000+goal.Y*100+width*10+height;
         }
-        public override QState GetNewState(string action)
+        public override QState GetNewState(QAction action)
         {
             
             int newX = self.X, newY = self.Y;
 
             // Translate decision to new coordinate
-            if (action == "up") newY--;
-            else if (action == "down") newY++;
-            else if (action == "left") newX--;
-            else if (action == "right") newX++;
+            if (action == UP) newY--;
+            else if (action == DOWN) newY++;
+            else if (action == LEFT) newX--;
+            else if (action == RIGHT) newX++;
 
             Point newPos = new Point(newX, newY);
 
@@ -148,13 +150,13 @@ namespace QLearner.QStates
             // Pass all variables to new state
             return new Maze() { maze = maze, self = newPos, goal = goal, width=width, height=height, walls=walls, score=score-1, opponent = opponent.ToList(), opponents=opponents, random=random, opponentDifficulty=opponentDifficulty};
         }
-        public override string[] GetActions()
+        public override QAction[] GetChoices()
         {
-            List<string> options = new List<string>();
-            if (self.X > 0 && !walls.Contains(new Point(self.X - 1, self.Y))) options.Add("left");
-            if (self.X < width - 1 && !walls.Contains(new Point(self.X + 1, self.Y))) options.Add("right");
-            if (self.Y > 0 && !walls.Contains(new Point(self.X, self.Y - 1))) options.Add("up");
-            if (self.Y < height - 1 && !walls.Contains(new Point(self.X, self.Y + 1))) options.Add("down");
+            List<QAction> options = new List<QAction>();
+            if (self.X > 0 && !walls.Contains(new Point(self.X - 1, self.Y))) options.Add(LEFT);
+            if (self.X < width - 1 && !walls.Contains(new Point(self.X + 1, self.Y))) options.Add(RIGHT);
+            if (self.Y > 0 && !walls.Contains(new Point(self.X, self.Y - 1))) options.Add(UP);
+            if (self.Y < height - 1 && !walls.Contains(new Point(self.X, self.Y + 1))) options.Add(DOWN);
             return options.ToArray();
         }
         public override decimal GetValue()
@@ -200,19 +202,19 @@ namespace QLearner.QStates
                     {
                         int newX = opponent[i].X, newY = opponent[i].Y;
 
-                        string action = opponentPath.actionsList.First();
+                        QAction action = opponentPath.actionsList.First();
 
                         if (random.NextDouble() > opponentDifficulty)
                         {
-                            string[] allActions = tempState.GetActions();
+                            QAction[] allActions = tempState.GetChoices();
                             action = allActions.ElementAt(random.Next(allActions.Length));
                         }
 
                         // Translate decision to new coordinate
-                        if (action == "up") newY--;
-                        else if (action == "down") newY++;
-                        else if (action == "left") newX--;
-                        else if (action == "right") newX++;
+                        if (action.ToString() == "up") newY--;
+                        else if (action.ToString() == "down") newY++;
+                        else if (action.ToString() == "left") newX--;
+                        else if (action.ToString() == "right") newX++;
 
                         //WriteOutput("Moving adversary at " + opponent[i] + " " + action + " to "+newX+", "+newY+"...");
                         opponent[i] = new Point(newX, newY);
@@ -298,7 +300,7 @@ namespace QLearner.QStates
             }
         }
 
-        public override Dictionary<string, decimal> GetFeatures(string action)
+        public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
             Point self = ((Maze)GetNewState(action)).self;
             QSearch qsearch = new QSearch(this);
@@ -351,7 +353,7 @@ namespace QLearner.QStates
 
             
 
-            return features;
+            return QFeature_String.FromStringDecimalDictionary(features);
         }
 
         public override decimal GetValueHeuristic()

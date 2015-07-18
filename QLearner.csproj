@@ -13,12 +13,13 @@
     <MapFileExtensions>true</MapFileExtensions>
     <PublisherName>pftq</PublisherName>
     <DisallowUrlActivation>true</DisallowUrlActivation>
-    <ApplicationRevision>49</ApplicationRevision>
-    <ApplicationVersion>1.2.0.%2a</ApplicationVersion>
+    <ApplicationRevision>53</ApplicationRevision>
+    <ApplicationVersion>1.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup />
@@ -104,6 +105,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="QAction.cs" />
+    <Compile Include="QAlgos\QLearning_Observant.cs" />
+    <Compile Include="QFeature.cs" />
     <Compile Include="QLearned.cs" />
     <Compile Include="QAlgos\AStar_Search.cs" />
     <Compile Include="QAlgos\Breadth_First_Search.cs" />

@@ -18,6 +18,8 @@ namespace QLearner.QStates
         private volatile MazeGUI_Example maze;
         private ManualResetEvent wait;
 
+        private readonly QAction UP = new QAction_String("up"), DOWN = new QAction_String("down"), LEFT = new QAction_String("left"), RIGHT = new QAction_String("right");
+
         public override QState Initialize()
         {
             WriteOutput("Dimensions: " + width + "x" + height, true);
@@ -61,16 +63,16 @@ namespace QLearner.QStates
         {
             return  (self.ToString()).GetHashCode() * 1000000 + goal.ToString().GetHashCode() * 10000 + width * 100 + height;
         }
-        public override QState GetNewState(string action)
+        public override QState GetNewState(QAction action)
         {
 
             int newX = self.X, newY = self.Y;
 
             // Translate decision to new coordinate
-            if (action == "up") newY--;
-            else if (action == "down") newY++;
-            else if (action == "left") newX--;
-            else if (action == "right") newX++;
+            if (action == UP) newY--;
+            else if (action == DOWN) newY++;
+            else if (action == LEFT) newX--;
+            else if (action == RIGHT) newX++;
 
             // Cannot go there
             if (newY < 0 || newX < 0 || newY >= height || newX >= width)
@@ -82,13 +84,13 @@ namespace QLearner.QStates
             // Pass all variables to new state
             return new Maze_With_No_Walls() { maze = maze, self = new Point(newX, newY), goal = goal, goalx = goalx, goaly = goaly, time = time + 1, width = width, height = height, score = score};
         }
-        public override string[] GetActions()
+        public override QAction[] GetChoices()
         {
-            List<string> options = new List<string>();
-            if (self.X > 0) options.Add("left");
-            if (self.X < width - 1) options.Add("right");
-            if (self.Y > 0) options.Add("up");
-            if (self.Y < height - 1) options.Add("down");
+            List<QAction> options = new List<QAction>();
+            if (self.X > 0) options.Add(LEFT);
+            if (self.X < width - 1 ) options.Add(RIGHT);
+            if (self.Y > 0 ) options.Add(UP);
+            if (self.Y < height - 1 ) options.Add(DOWN);
             return options.ToArray();
         }
         public override decimal GetValue()
@@ -179,21 +181,18 @@ namespace QLearner.QStates
             }
         }
 
-        public override Dictionary<string, decimal> Features(string action)
+        public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
             Point self = ((Maze_With_No_Walls)GetNewState(action)).self;
             QSearch qsearch = new QSearch(this);
             Maze_With_No_Walls simpleMaze = new Maze_With_No_Walls() { maze = maze, self = self, goal = goal, width = width, height = height };
             QSearchResult bestPath = qsearch.AStar(simpleMaze);
 
-            Dictionary<string, decimal> features = new Dictionary<string, decimal>() {
+            return QFeature_String.FromStringDecimalDictionary(new Dictionary<string, decimal>() {
                 //{this.GetHashCode().ToString()+"_"+action, 1}, // Identity to convert this back to QLearning
                 {"Goal", goal==self? 1:0},
                 {"Distance_To_Goal", bestPath==null? 1:(decimal) bestPath.Count / (decimal)(width * height)},
-            };
-
-
-            return features;
+            });
         }
 
         public override decimal GetValueHeuristic()

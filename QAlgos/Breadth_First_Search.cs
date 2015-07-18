@@ -17,14 +17,13 @@ namespace QLearner.QAlgos
     {
         public override QState Run(QState currentState, int trialNum, decimal learn, decimal discount, decimal explore)
         {
-            QSearch qsearch = new QSearch();
-            qsearch.Inherit(this);
+            QSearch qsearch = new QSearch(this);
             QSearchResult actions = qsearch.Breadth_First(currentState, true);
             if (actions != null)
             {
-                foreach (string action in actions.actionsList)
+                foreach (QAction action in actions.actionsList)
                 {
-                    if (!currentState.IsEnd() && isRunning && currentState.GetActions().Contains(action))
+                    if (!currentState.IsEnd() && isRunning && currentState.GetChoices().Contains(action))
                     {
                         WriteOutput(currentState + ": " + action);
                         QState newState = currentState.GetNewState(action);

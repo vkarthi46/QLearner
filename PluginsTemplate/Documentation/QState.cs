@@ -56,21 +56,28 @@ namespace QLearner.QStates
             return 0;
         }
 
-        // Returns list of possible actions given the current state.
-        public virtual string[] GetActions()
+        // Returns list of possible choices given the current state.
+        public virtual QAction[] GetChoices()
         {
-            return new string[]{};
+            return new QAction[] { };
         }
 
         // Returns the new state you get to from here if you take a certain action
         // This should only reflect the new action taken (independent variables update) and the most immediate unconditional effects of the independent action (no adversary, random environmental change, gui updates, etc). It should be quick to calculate, so that algorithms can use this for calculating estimates of solutions (with environment unchanging).  See the next method for applying the changes by environment/adversaries and gui updates.
         // Make sure to actually return a new instance with deep-copied properties, as opposed to just passing references.
-        public virtual QState GetNewState(string action)
+        public virtual QState GetNewState(QAction action)
         {
             return null;
         }
+
         // Called once per state/increment after GetNewState(). This should be where environment/adversaries change (dependent variables) or gui updates.  This can be slower and more thorough to calculate.  It is excluded when calculating estimates of solutions by algorithms.
-        public virtual void Step() { } 
+        public virtual void Step() { }
+
+        // Returns the other observable QStates to learn from, such as moves it could have done or what opponents did
+        public virtual Dictionary<QStateActionPair, QState> GetObservedStates(QState prevState, QAction action)
+        {
+            return new Dictionary<QStateActionPair, QState>() { };
+        }
         
         // Returns true when we reached the end point (no further actions to take)
         // There must be an end for Learning process to finish.
@@ -80,13 +87,14 @@ namespace QLearner.QStates
             return true;
         }
         // Called when the trial ends
-        public virtual void End() { } 
+        public virtual void End() { }
 
         // Features - aka characteristics - associated with a decision (state-action) and their values.  Used to determine similarity between different state-action pairs.  These should be estimated from a prior state.
         // Leave empty to not use and QLearner will judge each state independently with Equals.
         // Tip: Feature values should be defined as 1 or 0 (on/off) or try to normalize the value out of 1 as opposed to using infinite domain.
-        public virtual Dictionary<string, decimal> GetFeatures(string action) {  
-            { return new Dictionary<string, decimal>() { }; } 
+        public virtual Dictionary<QFeature, decimal> GetFeatures(QAction action)
+        {
+            { return new Dictionary<QFeature, decimal>() { { new QFeature_String(ToString()), 1 }}; }
         }
 
         // Called when the user clicks on the Settings button with your plugin selected.

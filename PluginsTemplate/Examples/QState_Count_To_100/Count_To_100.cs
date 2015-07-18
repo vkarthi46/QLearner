@@ -10,6 +10,7 @@ namespace QLearner.QStates
     {
         private int value, downIncrement, upIncrement;
         private const int CountTo = 100; // The ending count
+        private readonly QAction UP = new QAction_String("up"), DOWN = new QAction_String("down");
 
         public override QState Initialize()
         {
@@ -25,14 +26,13 @@ namespace QLearner.QStates
         {
             return value;
         }
-        public override QState GetNewState(string action)
+        public override QState GetNewState(QAction action)
         {
-            if (action == "up") return new Count_To_100() { value = this.value + this.upIncrement, upIncrement = this.upIncrement, downIncrement = this.downIncrement};
-            else return new Count_To_100() { value = this.value - this.downIncrement, upIncrement = this.upIncrement, downIncrement = this.downIncrement };
+            return new Count_To_100() { value = (action == UP ? this.value + this.upIncrement : this.value - this.downIncrement), upIncrement = this.upIncrement, downIncrement = this.downIncrement };
         }
-        public override string[] GetActions()
+        public override QAction[] GetChoices()
         {
-            return new string[] { "up", "down" };
+            return new QAction[] { UP, DOWN };
         }
         public override decimal GetValue()
         {
@@ -71,16 +71,16 @@ namespace QLearner.QStates
             }
         }
 
-        public override Dictionary<string, decimal> Features(string action)
+        public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
             int newVal = value;
-            if (action == "up") newVal++;
+            if (action == UP) newVal++;
             else newVal--;
-            //popup("Distance from " + newVal + ": " + dst);
-            return new Dictionary<string, decimal>() {
+            return QFeature_String.FromStringDecimalDictionary(new Dictionary<string, decimal>() {
                 //{value.ToString()+"_"+action, 1}, // Identity for sanity check
-                {"Distance_Change", newVal-value}
-            };
+                //{"Distance", (decimal)Math.Abs(end-newVal)}
+                {"Distance_Change", Math.Abs(CountTo-newVal)-Math.Abs(CountTo-value)}
+            });
         }
 
         public override QState Open(object o)

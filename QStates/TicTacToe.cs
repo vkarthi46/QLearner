@@ -106,11 +106,11 @@ namespace QLearner.QStates
         {
             return myMoves.Select(x=>(x.X+1)*10+(x.Y+1)).Sum()+yourMoves.Select(x=>(x.X+1)*1000+(x.Y+1)*100).Sum();
         }
-        public override QState GetNewState(string action=null)
+        public override QState GetNewState(QAction action = null)
         {
-            if (action != "")
+            if (action.ToString() != "")
             {
-                string[] point = action.Split(',');
+                string[] point = action.ToString().Split(',');
                 Point newPos = new Point(Convert.ToInt32(point[0]), Convert.ToInt32(point[1]));
 
                 List<Point> newSpaces = openSpaces.ToList();
@@ -126,9 +126,23 @@ namespace QLearner.QStates
             }
             else return this;
         }
-        public override string[] GetActions()
+        public override QAction[] GetChoices()
         {
-            return openSpaces.Any()? openSpaces.Select(x=>x.X+","+x.Y).ToArray():new string[]{""};
+            return openSpaces.Any() ? openSpaces.Select(x => new QAction_String(x.X + "," + x.Y)).ToArray() : new QAction[] { new QAction_String("") };
+        }
+        public override Dictionary<QStateActionPair, QState> GetObservedStates(QState prevState, QAction action)
+        {
+            TicTacToe stateAfterMyMove = (TicTacToe)prevState.GetNewState(action);
+            TicTacToe stateFromOpponentsView = new TicTacToe() { myMoves = stateAfterMyMove.yourMoves.ToList(), yourMoves = stateAfterMyMove.myMoves.ToList(), me = you, you = me, random = random, gui = gui, openSpaces = stateAfterMyMove.openSpaces.ToList(), score = stateAfterMyMove.score };
+            TicTacToe stateNowFromOpponentsView = new TicTacToe() { myMoves = yourMoves.ToList(), yourMoves = myMoves.ToList(), me = you, you = me, random = random, gui = gui, openSpaces = openSpaces.ToList(), score = stateAfterMyMove.score };
+            
+            foreach (Point x in stateNowFromOpponentsView.myMoves)
+                if (!stateFromOpponentsView.myMoves.Contains(x)) 
+                    return new Dictionary<QStateActionPair, QState>() {
+                        {new QStateActionPair(stateFromOpponentsView, new QAction_String(x.X + "," + x.Y)), stateNowFromOpponentsView}
+                    };
+
+            return new Dictionary<QStateActionPair, QState>();
         }
         public override decimal GetValue()
         {
@@ -215,6 +229,21 @@ namespace QLearner.QStates
                 else if (score == -1) popup("We suck.");
             }
             if (gui != null) gui.Quit();
+        }
+
+        public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
+        {
+            Dictionary<string, decimal> slots = new Dictionary<string, decimal>() { };
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (myMoves.Contains(new Point(i, j)) || i+","+j==action.ToString()) slots[i + "," + j] = 1;
+                    else if (yourMoves.Contains(new Point(i, j))) slots[i + "," + j] = -1;
+                    else slots[i + "," + j] = 0;
+                }
+            }
+            return QFeature_String.FromStringDecimalDictionary(slots);
         }
 
         public override object Save()

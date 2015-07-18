@@ -14,15 +14,15 @@ namespace QLearner.QAlgos
     [System.Reflection.ObfuscationAttribute(Feature = "renaming", ApplyToMembers = false)]
     public class QLearning_Approximate:QLearning
     {
-        protected Dictionary<string, decimal> QWeights;
-        private Dictionary<QStateActionPair, Dictionary<string, decimal>> featureCache;
+        protected Dictionary<QFeature, decimal> QWeights;
+        private Dictionary<QStateActionPair, Dictionary<QFeature, decimal>> featureCache;
 
         public override void Initialize()
         {
-            QWeights = new Dictionary<string, decimal>();
+            QWeights = new Dictionary<QFeature, decimal>();
             random = new Random();
             RenameLearningTable("#", "Feature", "Weight", "Last");
-            featureCache = new Dictionary<QStateActionPair, Dictionary<string, decimal>>();
+            featureCache = new Dictionary<QStateActionPair, Dictionary<QFeature, decimal>>();
         }
 
         // Return the value of performing an action based on the features expected from the action.
@@ -30,7 +30,7 @@ namespace QLearner.QAlgos
         {
             decimal qv = 0;
 
-            Dictionary<string, decimal> features;
+            Dictionary<QFeature, decimal> features;
             //features = p.state.GetFeaturesEstimate(p.action);
             if (featureCache.ContainsKey(p)) features = featureCache[p];
             else
@@ -38,7 +38,7 @@ namespace QLearner.QAlgos
                 features = p.state.GetFeatures(p.action);
                 featureCache[p] = features;
             }
-            foreach (KeyValuePair<string, decimal> feature in features)
+            foreach (KeyValuePair<QFeature, decimal> feature in features)
             {
                 if (!QWeights.ContainsKey(feature.Key)) QWeights[feature.Key] = 0;
                 qv += QWeights[feature.Key] * feature.Value;
@@ -48,11 +48,11 @@ namespace QLearner.QAlgos
         }
 
         // Update the weights of each feature based on their contribution to the reward
-        protected override void QUpdate(int n, QState currentState, string action, QState newState, decimal reward)
+        protected override void QUpdate(int n, QState currentState, QAction action, QState newState, decimal reward)
         {
             decimal maxQ = GetMaxValue(newState);
             QStateActionPair p = new QStateActionPair(currentState, action);
-            Dictionary<string, decimal> features;
+            Dictionary<QFeature, decimal> features;
             if (featureCache.ContainsKey(p)) features = featureCache[p];
             else
             {
@@ -61,7 +61,7 @@ namespace QLearner.QAlgos
             }
             decimal currentQ = GetQValue(p);
             decimal difference = reward + discount * maxQ - currentQ;
-            foreach (KeyValuePair<string, decimal> feature in features)
+            foreach (KeyValuePair<QFeature, decimal> feature in features)
             {
                 try
                 {
@@ -81,20 +81,20 @@ namespace QLearner.QAlgos
             }
             
             // Output
-            foreach (KeyValuePair<string, decimal> feature in QWeights)
+            foreach (KeyValuePair<QFeature, decimal> feature in QWeights)
             {
-                UpdateLearningTable(-1, feature.Key, feature.Value.ToString(), features.ContainsKey(feature.Key) ? features[feature.Key] : 0);
+                UpdateLearningTable(-1, feature.Key.ToString(), feature.Value.ToString(), features.ContainsKey(feature.Key) ? features[feature.Key] : 0);
             }
 
         }
 
         public override void Open(object o, QState initialState)
         {
-            QWeights = (Dictionary<string, decimal>)o;
+            QWeights = (Dictionary<QFeature, decimal>)o;
             ClearLearningTable();
             int i = 1;
-            foreach (KeyValuePair<string, decimal> kv in QWeights)
-                UpdateLearningTable(i++, kv.Key, kv.Value.ToString(), 0);
+            foreach (KeyValuePair<QFeature, decimal> kv in QWeights)
+                UpdateLearningTable(i++, kv.Key.ToString(), kv.Value.ToString(), 0);
         }
 
         public override object Save()

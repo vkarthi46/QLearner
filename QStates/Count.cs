@@ -10,6 +10,7 @@ namespace QLearner.QStates
     public class Count:QState
     {
         private int start=0, end=10, value, downIncrement=1, upIncrement=1;
+        private readonly QAction UP = new QAction_String("up"), DOWN = new QAction_String("down");
 
         public override QState Initialize()
         {
@@ -23,13 +24,13 @@ namespace QLearner.QStates
         {
             return value;
         }
-        public override QState GetNewState(string action)
+        public override QState GetNewState(QAction action)
         {
-            return new Count() { start = this.start, end=this.end, value = (action == "up"? this.value + this.upIncrement:this.value - this.downIncrement), upIncrement = this.upIncrement, downIncrement = this.downIncrement};
+            return new Count() { start = this.start, end=this.end, value = (action==UP? this.value + this.upIncrement:this.value - this.downIncrement), upIncrement = this.upIncrement, downIncrement = this.downIncrement};
         }
-        public override string[] GetActions()
+        public override QAction[] GetChoices()
         {
-            return new string[] { "up", "down" };
+            return new QAction[] { UP, DOWN };
         }
         public override decimal GetValue()
         {
@@ -72,16 +73,16 @@ namespace QLearner.QStates
             }
         }
 
-        public override Dictionary<string, decimal> GetFeatures(string action)
+        public override Dictionary<QFeature, decimal> GetFeatures(QAction action)
         {
             int newVal = value;
-            if (action == "up") newVal++;
+            if (action == UP) newVal++;
             else newVal--;
-            return new Dictionary<string, decimal>() {
+            return QFeature_String.FromStringDecimalDictionary(new Dictionary<string, decimal>() {
                 //{value.ToString()+"_"+action, 1}, // Identity for sanity check
                 //{"Distance", (decimal)Math.Abs(end-newVal)}
                 {"Distance_Change", Math.Abs(end-newVal)-Math.Abs(end-value)}
-            };
+            });
         }
         public override decimal GetValueHeuristic()
         {

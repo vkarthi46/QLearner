@@ -56,7 +56,7 @@ namespace QLearner
         {
             if(main!=null) main.UpdateLearningTable(n, s, a, qv);
         }
-        protected void UpdateLearningTable(int n, QState s, string a, decimal qv)
+        protected void UpdateLearningTable(int n, QState s, QAction a, decimal qv)
         {
             if(main!=null) main.UpdateLearningTable(n, s, a, qv);
         }

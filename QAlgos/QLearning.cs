@@ -34,7 +34,7 @@ namespace QLearner.QAlgos
             while (!currentState.IsEnd() && GetOutcomes(currentState).Count > 0 && isRunning)
             {
                 actionsTaken++;
-                string a;
+                QAction a;
                 bool exp;
                 if (explore > 0 && (decimal)random.NextDouble() <= explore)
                 {
@@ -53,6 +53,7 @@ namespace QLearner.QAlgos
                 score += r;
                 QUpdate(actionsTaken, currentState, a, newState, r);
                 if(!HideOutput) WriteOutput((CurrentMode == LEARN ? "Trial " + trialNum + ", " : "") + "#" + actionsTaken + " " + (exp ? "Explore" : "Action") + ": '" + a + "' @ " + currentState.ToString() + " | Gain " + Math.Round(r, 4) + ",  Total " + Math.Round(score, 4));
+
                 currentState = newState;
             }
             if (isRunning)
@@ -77,7 +78,7 @@ namespace QLearner.QAlgos
         // Return list of all possible states that can result from an action taken from the current state
         protected virtual List<QStateActionPair> GetOutcomes(QState state)
         {
-            return state.GetActions().Select(x => new QStateActionPair(state, x)).ToList() ;
+            return state.GetChoices().Select(x => new QStateActionPair(state, x)).ToList() ;
         }
 
         // Return the value of the best action taken at given state, else 0 if not known
@@ -87,10 +88,10 @@ namespace QLearner.QAlgos
         }
 
         // Return best action to take from current state (best QValue or random if tied)
-        protected virtual string GetBestAction(QState state)
+        protected virtual QAction GetBestAction(QState state)
         {
             decimal maxVal = GetMaxValue(state);
-            IEnumerable<string> s = GetOutcomes(state).Where(x => GetQValue(x) == maxVal).Select(x => x.action);
+            IEnumerable<QAction> s = GetOutcomes(state).Where(x => GetQValue(x) == maxVal).Select(x => x.action);
             int n = s.Count();
             if (n == 1) return s.First();
             else
@@ -99,13 +100,13 @@ namespace QLearner.QAlgos
             }
         }
         // Return a random action for exploration
-        protected virtual string GetRandomAction(QState state)
+        protected virtual QAction GetRandomAction(QState state)
         {
-            IEnumerable<string> s = GetOutcomes(state).Select(x => x.action);
+            IEnumerable<QAction> s = GetOutcomes(state).Select(x => x.action);
             return s.ElementAt(random.Next(s.Count()));
         }
 
-        protected virtual void QUpdate(int n, QState currentState, string action, QState newState, decimal reward)
+        protected virtual void QUpdate(int n, QState currentState, QAction action, QState newState, decimal reward)
         {
             QStateActionPair p = new QStateActionPair(currentState, action);
             decimal maxQ = GetMaxValue(newState);
@@ -120,7 +121,7 @@ namespace QLearner.QAlgos
 
             foreach (KeyValuePair<object[], decimal> kv in ((Dictionary<object[], decimal>)o))
             {
-                QValues.Add(new QStateActionPair(initialState.Open(kv.Key[0]), (string)kv.Key[1]), kv.Value);
+                QValues.Add(new QStateActionPair(initialState.Open(kv.Key[0]), (QAction)kv.Key[1]), kv.Value);
             }
             
             int i=1;

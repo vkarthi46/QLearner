@@ -18,7 +18,7 @@ namespace QLearner
 {
     public partial class QLearner : Form
     {
-        private int version = 1, subversion = 2;
+        private int version = 1, subversion = 3;
         private QAgent agent;
         private QState state;
         private QAlgo algo;
@@ -31,7 +31,7 @@ namespace QLearner
         private List<DataGridViewRow> displayRowQueue;
         private List<string> OutputQueue;
 
-        private decimal tempExploreRate, tempLearnRate;
+        private decimal tempExploreRate=-1, tempNumTrials=-1;
 
         public QLearner()
         {
@@ -106,7 +106,7 @@ namespace QLearner
             t.SetToolTip(ExploreRateLabel, tip);
             t.SetToolTip(ExploreRate, tip);
             LearningTrials.ValueChanged += (o, s) => { Properties.Settings.Default.LearningTrials = LearningTrials.Value;  Properties.Settings.Default.Save(); };
-            tip = "The number of times to practice at the QState before Learning is complete.";
+            tip = "Learn mode only. The number of times to practice at the QState before Learning is complete.";
             t.SetToolTip(LearningTrialsLabel, tip);
             t.SetToolTip(LearningTrials, tip);
             HideOutput.CheckedChanged += (o, s) =>
@@ -148,8 +148,12 @@ namespace QLearner
                 if (!awakenProcess.IsBusy && !awakenProcess.CancellationPending)
                 {
                     CurrentMode = AWAKEN;
+
                     tempExploreRate = ExploreRate.Value;
-                    tempLearnRate = LearningRate.Value;
+                    tempNumTrials = LearningTrials.Value;
+
+                    ExploreRate.Value = 0;
+                    LearningTrials.Value = 1;
                     
                     Awaken.Text = "Abort";
                     Learn.Enabled = false;
@@ -171,6 +175,9 @@ namespace QLearner
                 FlushOutputQueue(true, true);
                 Awaken.Enabled = false;
                 Awaken.Text = "Awaken";
+
+                ExploreRate.Value = tempExploreRate;
+                LearningTrials.Value = tempNumTrials;
 
                 EnableControls();
                 Learn.Enabled = true;
@@ -214,7 +221,7 @@ namespace QLearner
         {
             LearningRate.Enabled = DiscountFactor.Enabled = ExploreRate.Enabled = LearningTrials.Enabled= QStatePlugins.Enabled =
                 QAlgoPlugins.Enabled = ClearPlugins.Enabled = Open.Enabled = Save.Enabled = on;
-            Settings.Enabled = on ? state.HasSettings : false;
+            Settings.Enabled = on && state!=null ? state.HasSettings : false;
         }
 
         public void Abort()
@@ -451,8 +458,8 @@ namespace QLearner
             }
         }
 
-        private delegate void UpdateLearningTableD(int n, QState s, string a, decimal qv);
-        public void UpdateLearningTable(int n, QState s, string a, decimal qv)
+        private delegate void UpdateLearningTableD(int n, QState s, QAction a, decimal qv);
+        public void UpdateLearningTable(int n, QState s, QAction a, decimal qv)
         {
             if (InvokeRequired)
             {
@@ -468,7 +475,7 @@ namespace QLearner
                 }
                 else
                 {
-                    LearningTable.Rows.Add(n, s.ToString(), a, qv);
+                    LearningTable.Rows.Add(n, s.ToString(), a.ToString(), qv);
                     LearningTableQStateKeys[p] = LearningTable.Rows[LearningTable.Rows.Count - 1]; ;
                 }
             }
@@ -535,12 +542,12 @@ namespace QLearner
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (Awaken.Text == "Abort")
+            if (Awaken.Text == "Abort" && tempExploreRate >= 0 && tempNumTrials>=0)
             {
                 ExploreRate.Enabled = true;
                 ExploreRate.Value = tempExploreRate;
-                LearningRate.Enabled = true;
-                LearningRate.Value = tempLearnRate;
+                LearningTrials.Enabled = true;
+                LearningTrials.Value = tempNumTrials;
             }
             base.OnFormClosing(e);
         }
@@ -690,10 +697,15 @@ namespace QLearner
 
                         if (o != null)
                         {
+                            if (algo == null || algo.GetType().Name != o.algo) QAlgoPlugins.SelectedItem = o.algo;
+                            if (state == null || state.GetType().Name != o.state) QStatePlugins.SelectedItem = o.state;
+                            agent = new QAgent(this, algo, state);
                             agent.Open(o);
-                            WriteOutput("Learning data loaded from " + f.FileName);
                         }
-                        else popup("Unable to open data from " + f.FileName);
+                        else
+                        {
+                            popup("Unable to open data from " + f.FileName);
+                        }
                     }
                     catch (Exception e)
                     {
@@ -717,7 +729,7 @@ namespace QLearner
                 SaveFileDialog dialog = new SaveFileDialog();
                 dialog.Title = "Save learned data to...";
                 dialog.Filter = "QLearned Files (*.qlearned)|*.qlearned";
-                dialog.FileName = o.state + "_" + o.algo + "_Learn"+o.learn+"_Discount"+o.discount+"_Explore"+o.explore+"_"+o.trials+"Trial"+(o.trials==1? "":"s");
+                dialog.FileName = o.state + "_" + o.algo.Replace("_", "") + "_Learn"+o.learn+"_Discount"+o.discount+"_Explore"+o.explore+"_"+o.trials+"Trial"+(o.trials==1? "":"s");
                 dialog.AddExtension = true;
 
                 
@@ -730,7 +742,6 @@ namespace QLearner
                     {
                         try
                         {
-                            
                             BinaryFormatter bFormatter = new BinaryFormatter();
                             bFormatter.Serialize(stream, o);
                             stream.Close();

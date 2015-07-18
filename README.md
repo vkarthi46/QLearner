@@ -13,7 +13,10 @@ About QLearner:
 
 QLearner was originally a short AI script built into Tech Trader for optimizing stock trading strategies.  I went ahead and took the script out of Tech Trader and made QLearner a stand-alone program so that it has more flexibility to work besides just strategy optimization for stocks.  Namely, it can now apply machine learning to any situation the user builds a template for (or finds a template for...).
 	
-Like the name suggests, QLearner originally used Q-Learning algorithms, which is on the simpler side of AI but can still solve a lot of things and be useful in a lot of situations.  From there, more QStates and QAlgos were added.  The open-ended nature of the QLearner program though allows this to continue to be expanded on in the future.  We'll see. :)
+Like the name suggests, QLearner originally used Q-Learning algorithms but has since incorporated numerous other concepts to behave and learn in a more human-like manner.  Details on my approach to machine learning can be found in my write-up Creating Sentient Artificial Intelligence:
+http://www.pftq.com/blabberbox/?blogcat=writings;page=Creating_Sentient_Artificial_Intelligence
+
+-pftq
 
 
 Credits:
@@ -22,6 +25,12 @@ Credits:
 
 
 Changelog:
+
+	v1-3 2014-09-06 to 2015-07-17, pftq:
+
+	* Converted features, actions to abstraction to allow any datatype as the key.
+	* Added new GetObservedStates method to QState to allow observation of others' actions or choices it could have made.
+	* Added improved QLearning algo called QLearning_Observant that takes advantage of GetObservedStates. Exponentially improves learning rate.
 
 	v1-2 2014-07-07 to 2014-08-01, pftq:
 

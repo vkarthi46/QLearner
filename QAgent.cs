@@ -121,7 +121,7 @@ namespace QLearner
             QState state = initialState.Initialize();
             state.Inherit(initialState);
 
-            QState s = currentAlgo.Run(state, trialNum, learn, discount, CurrentMode==QLearner.LEARN? explore:0);
+            QState s = currentAlgo.Run(state, trialNum, learn, discount, explore);
             if (master != null)
             {
                 master.UpdateScore(s.GetValue());
@@ -136,7 +136,11 @@ namespace QLearner
         {
             if (o.algo != currentAlgo.GetType().Name) master.popup("QLearned file is for the QAlgo '" + o.algo + "', not the '" + currentAlgo.GetType().Name + "' currently selected.");
             else if (o.state != initialState.GetType().Name) master.popup("QLearned file is for the QState '" + o.state + "', not the '" + initialState.GetType().Name + "' currently selected.");
-            else currentAlgo.Open(o.contents, initialState);
+            else
+            {
+                currentAlgo.Open(o.contents, initialState);
+                WriteOutput("Learning data loaded.");
+            }
         }
 
         public QLearned Save()

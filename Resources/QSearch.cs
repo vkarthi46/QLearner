@@ -43,7 +43,7 @@ namespace QLearner.Resources
                 else
                 {
                     explored.Add(current);
-                    foreach (string action in current.GetActions())
+                    foreach (QAction action in current.GetChoices())
                     {
                         QState newState = current.GetNewState(action);
                         if (!explored.Contains(newState))
@@ -86,7 +86,7 @@ namespace QLearner.Resources
                 else
                 {
                     explored.Add(current);
-                    foreach (string action in current.GetActions())
+                    foreach (QAction action in current.GetChoices())
                     {
                         QState newState = current.GetNewState(action);
                         if (!explored.Contains(newState))
@@ -129,7 +129,7 @@ namespace QLearner.Resources
                 else
                 {
                     explored.Add(current);
-                    foreach (string action in current.GetActions())
+                    foreach (QAction action in current.GetChoices())
                     {
                         QState newState = current.GetNewState(action);
                         if (!explored.Contains(newState))
@@ -172,11 +172,11 @@ namespace QLearner.Resources
     public class QSearchResult
     {
         public List<QState> QStatesList;
-        public List<string> actionsList;
+        public List<QAction> actionsList;
         public QSearchResult()
         {
             QStatesList = new List<QState>();
-            actionsList = new List<string>();
+            actionsList = new List<QAction>();
         }
 
         public QSearchResult(QSearchResult q)

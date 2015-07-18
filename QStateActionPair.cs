@@ -11,9 +11,9 @@ namespace QLearner
     public class QStateActionPair
     {
         public QState state;
-        public string action;
+        public QAction action;
 
-        public QStateActionPair(QState s, string a)
+        public QStateActionPair(QState s, QAction a)
         {
             state = s;
             action = a;
