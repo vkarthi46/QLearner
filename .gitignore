@@ -217,3 +217,5 @@ $RECYCLE.BIN/
 Plugins
 QLearner.csproj.user
 Screenshots
+QAlgos/Hidden_Markov_Model.cs
+QStates/Probability.cs
